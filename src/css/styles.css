@@ -124,7 +124,7 @@
   animation: rotate 2s infinite ease-in-out;
 }
 
-.load-more-hidden {
+.hidden {
   display: none;
 }
 

@@ -3,36 +3,21 @@ import axios from 'axios';
 const BASE_URL = `https://pixabay.com/api`;
 const API_KEY = '47378473-ac089f81fe0a13d2309255fc1';
 
-export function getPhotoService(query) {
-  const params = new URLSearchParams({
+export async function getPhotoService(query, page = 1, perPage = 15) {
+  const params = {
     key: API_KEY,
     q: query,
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: 'true',
-  });
+    page,
+    per_page: perPage,
+  };
 
-  return fetch(`${BASE_URL}/?${params}`).then(res => {
-    if (!res.ok) {
-      throw new Error(res.statusText);
-    }
-    return res.json();
-  });
+  try {
+    const response = await axios.get(BASE_URL, { params });
+    return response.data;
+  } catch (error) {
+    throw new Error(response.statusText);
+  }
 }
-
-// export async function getPhotoService(query) {
-//   const params = {
-//     key: API_KEY,
-//     q: query,
-//     image_type: 'photo',
-//     orientation: 'horizontal',
-//     safesearch: 'true',
-//   };
-
-//   try {
-//     const response = await axios.get(BASE_URL, { params });
-//     return response.data;
-//   } catch (error) {
-//     throw new Error(error.response?.statusText || error.message);
-//   }
-// }
