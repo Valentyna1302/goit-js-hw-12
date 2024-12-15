@@ -40,8 +40,8 @@ async function handlerSearch(event) {
   loader.classList.remove('hidden');
 
   try {
-    const response = await getPhotoService(currentQuery, currentPage, perPage);
-    const data = response.data;
+    const data = await getPhotoService(currentQuery, currentPage, perPage);
+
     if (data.hits.length === 0) {
       return iziToast.error({
         position: 'topRight',
@@ -52,11 +52,15 @@ async function handlerSearch(event) {
     }
 
     createMarkup(data.hits);
-    toggleLoadMoreButton(data.totalHits > perPage);
-    iziToast.success({
-      position: 'topRight',
-      message: "We're sorry, but you've reached the end of search results.",
-    });
+    toggleLoadMoreButton(data.totalHits > currentPage * perPage);
+
+    if (currentPage * perPage >= data.totalHits) {
+      toggleLoadMoreButton(false);
+      iziToast.info({
+        position: 'topRight',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
+    }
   } catch (error) {
     iziToast.error({
       position: 'topRight',
@@ -72,8 +76,7 @@ async function loadMorePhotos() {
   loader.classList.remove('hidden');
 
   try {
-    const response = await getPhotoService(currentQuery, currentPage, perPage);
-    const data = response.data;
+    const data = await getPhotoService(currentQuery, currentPage, perPage);
     createMarkup(data.hits);
     toggleLoadMoreButton(data.totalHits > currentPage * perPage);
     smoothScroll();

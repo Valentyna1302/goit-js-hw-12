@@ -128,16 +128,21 @@
   display: none;
 }
 
-.load-more {
+.button-container {
+  text-align: center;
+}
+
+.js-load-more {
   display: inline-block;
   font-weight: 500;
   color: #fff;
   background: #4e75ff;
   border-radius: 8px;
   padding: 8px 16px;
+  margin-top: 32px;
 }
 
-.load-more:hover {
+.js-load-more:hover {
   background-color: #6c8cff;
 }
 
