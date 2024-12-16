@@ -64,7 +64,7 @@ async function handlerSearch(event) {
   } catch (error) {
     iziToast.error({
       position: 'topRight',
-      message: error.message,
+      message: `Error: ${error.message || 'Something went wrong!'}`,
     });
   } finally {
     loader.classList.add('hidden');
@@ -74,6 +74,7 @@ async function handlerSearch(event) {
 async function loadMorePhotos() {
   currentPage += 1;
   loader.classList.remove('hidden');
+  loadMore.classList.add('hidden');
 
   try {
     const data = await getPhotoService(currentQuery, currentPage, perPage);
@@ -90,9 +91,12 @@ async function loadMorePhotos() {
   } catch (error) {
     iziToast.error({
       position: 'topRight',
-      message: error.message,
+      message: `Error: ${error.message || 'Something went wrong!'}`,
     });
   } finally {
     loader.classList.add('hidden');
+    if (currentPage * perPage < data.totalHits) {
+      loadMore.classList.remove('hidden');
+    }
   }
 }
